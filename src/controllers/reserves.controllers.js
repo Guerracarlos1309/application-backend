@@ -1,4 +1,5 @@
 import { data } from "../data/data.js";
+
 export const getReserves = () => {
   return data.reserves;
 };

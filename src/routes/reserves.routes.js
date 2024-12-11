@@ -3,6 +3,7 @@ import {
   getReserves,
   getReserveById,
   newReserves,
+  //deleteReserve
 } from "../controllers/reserves.controllers.js";
 
 const router = Router();
@@ -22,6 +23,8 @@ router.get("/reserves/:id", async (req, res) => {
     res.json({ mensaje: "Reserve not found" });
   }
 });
+
+//router.delete("/reserves/:id", deleteReserve)
 
 router.post("/reserves", (req, res) => {
   const body = req.body;
