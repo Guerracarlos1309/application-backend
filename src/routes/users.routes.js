@@ -1,43 +1,39 @@
 import { Router } from "express";
+import { userController } from "../controllers/users.controllers.js";
 import {
-  getUsers,
-  getUserById,
-  newUsers,
-} from "../controllers/users.controllers.js";
+  verifyAdmin,
+  verifyToken,
+  removeToken,
+} from "../middlewares/jwt.middlewares.js";
+// import {
+//   getUsers,
+//   getUserById,
+//   newUsers,
+// } from "../controllers/users.controllers.js";
 
 const router = Router();
 
-router.get("/users", (req, res) => {
-  const users = getUsers();
-  res.json(users);
-});
+router.post("/register", userController.register);
+router.post("/login", userController.login);
+router.post("/resetPassword", userController.resetPassword);
+router.get("/profile", verifyToken, userController.profile);
 
-router.get("/users/:userId", async (req, res) => {
-  const { userId } = req.params;
-  const user = await getUserById(parseInt(userId));
-  if (user) {
-    res.json(user);
-  } else {
-    res.json({ mensaje: "User not found" });
-  }
-});
-router.post("/users", (req, res) => {
-  const body = req.body;
-  const result = newUsers(body);
+// addmin
+router.get("/", verifyToken, verifyAdmin, userController.findAll);
+router.put(
+  "/update-role/:iduser",
+  verifyToken,
+  verifyAdmin,
+  userController.updateRole
+);
 
-  if (result.error) {
-    res.json({ mensaje: result.mensaje });
-  } else {
-    res.json({ mensaje: result.mensaje, user: result.user });
-  }
-});
-
-router.delete("/users/:userId", (req, res) => {
-  res.send("eliminando usuarios");
-});
-
-router.put("/users/:userId", (req, res) => {
-  res.send("actualizando usuarios");
-});
+router.post("/logout", verifyToken, removeToken, userController.logout);
+7;
+router.delete(
+  "/delete/:iduser",
+  verifyToken,
+  verifyAdmin,
+  userController.deleteUser
+);
 
 export default router;

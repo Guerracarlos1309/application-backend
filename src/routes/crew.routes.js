@@ -1,39 +1,34 @@
 import { Router } from "express";
-import {
-  getCrew,
-  getCrewById,
-  postCrew,
-} from "../controllers/crew.controllers.js";
+import { crewController } from "../controllers/crew.controllers.js";
+import { verifyAdmin, verifyToken } from "../middlewares/jwt.middlewares.js";
 
 const router = Router();
 
-router.get("/crew", (req, res) => {
-  const crews = getCrew();
+router.post(
+  "/create",
+  verifyToken,
+  verifyAdmin,
+  crewController.createCrewMember
+);
 
-  if (!crews) {
-    return res.json({ mensaje: "No crew found" });
-  }
-  res.json(crews);
-});
-router.get("/crew/:id", async (req, res) => {
-  const { id } = req.params;
-  const crew = await getCrewById(parseInt(id));
+router.get("/", verifyToken, verifyAdmin, crewController.getAllCrewMembers);
+router.get(
+  "/search",
+  verifyToken,
+  verifyAdmin,
+  crewController.getCrewByFlightHours
+);
+router.put(
+  "/update/:id_license",
+  verifyToken,
+  verifyAdmin,
+  crewController.updateCrewMember
+);
 
-  if (crew) {
-    res.json(crew);
-  } else {
-    res.json({ mensaje: "Crew not found" });
-  }
-});
-router.post("/crew", (req, res) => {
-  const body = req.body;
-  const result = postCrew(body);
-
-  if (result.error) {
-    res.json({ mensaje: result.mensaje });
-  } else {
-    res.json({ mensaje: result.mensaje, crew: result.crew });
-  }
-});
-
+router.delete(
+  "/delete/:id_license",
+  verifyToken,
+  verifyAdmin,
+  crewController.deleteCrewMember
+);
 export default router;
