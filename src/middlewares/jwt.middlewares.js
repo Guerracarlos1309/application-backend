@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+// import blackListModels from "../models/blackList.models.js";
 
 export const verifyToken = (req, res, next) => {
   let token = req.headers.authorization;
@@ -36,24 +37,53 @@ export const verifyAdmin = (req, res, next) => {
   });
 };
 
-export const removeToken = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+// export const removeToken = async (req, res, next) => {
+//   const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) {
-    return res.status(401).json({
-      error: "Token is required",
-    });
-  }
+//   if (!token) {
+//     return res.status(401).json({
+//       error: "Token is required",
+//     });
+//   }
 
-  try {
-    const decode = jwt.verify(token, process.env.JWT_SECRET);
-    req.gmail = decode.gmail;
-    req.fk_role = decode.fk_role;
-    next();
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({
-      error: "failed to remove token",
-    });
-  }
-};
+//   try {
+//     const decode = jwt.verify(token, process.env.JWT_SECRET);
+//     req.gmail = decode.gmail;
+//     req.fk_role = decode.fk_role;
+//     next();
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(400).json({
+//       error: "failed to remove token",
+//     });
+//   }
+// };
+
+// export const validateToken = (req, res, next) => {
+//   try {
+//     const token = req.headers["authorization"]?.split(" ")[1];
+
+//     if (!token) {
+//       return res.json({
+//         ok: false,
+//         msg: "Token is required",
+//       });
+//     }
+
+//     if (blackListModels.isTokenBlackListed(token)) {
+//       return res.json({
+//         ok: false,
+//         msg: "Invalid token ",
+//       });
+//     }
+
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//     req.user = decoded;
+//     next();
+//   } catch (error) {
+//     return res.json({
+//       ok: false,
+//       msg: "Token invalido",
+//     });
+//   }
+// };

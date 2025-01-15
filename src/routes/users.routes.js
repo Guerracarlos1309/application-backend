@@ -3,13 +3,9 @@ import { userController } from "../controllers/users.controllers.js";
 import {
   verifyAdmin,
   verifyToken,
-  removeToken,
+  // removeToken,
+  // validateToken,
 } from "../middlewares/jwt.middlewares.js";
-// import {
-//   getUsers,
-//   getUserById,
-//   newUsers,
-// } from "../controllers/users.controllers.js";
 
 const router = Router();
 
@@ -27,7 +23,7 @@ router.put(
   userController.updateRole
 );
 
-router.post("/logout", verifyToken, removeToken, userController.logout);
+router.post("/logout", verifyToken, userController.logout);
 7;
 router.delete(
   "/delete/:iduser",

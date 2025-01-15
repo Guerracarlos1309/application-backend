@@ -153,11 +153,42 @@ const updateRole = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  return res.json({
-    ok: true,
-    msg: "Logout",
-  });
+  try {
+    res.status(200).json({
+      ok: true,
+      msg: "Logout exitoso",
+    });
+  } catch (error) {
+    console.error("Error en el logout:", error);
+    res.status(500).json({
+      ok: false,
+      msg: "Hubo un error al intentar cerrar sesión",
+    });
+  }
 };
+
+// const logout = async (req, res) => {
+//   try {
+//     const token = req.headers["authorization"]?.split(" ")[1];
+
+//     if (!token) {
+//       return res.json({
+//         ok: false,
+//         msg: "Token no proporcionado",
+//       });
+//     }
+//     blackListModels.addToken(token);
+//     return res.json({
+//       ok: true,
+//       msg: "Logout exitoso",
+//     });
+//   } catch (error) {
+//     return res.json({
+//       ok: false,
+//       msg: "Error al intentar cerrar sesion",
+//     });
+//   }
+// };
 
 const deleteUser = async (req, res) => {
   try {
