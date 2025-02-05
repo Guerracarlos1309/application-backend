@@ -4,9 +4,8 @@ import path from "path";
 
 export async function createExcel() {
   try {
-    console.log("📥 Generando archivo Excel...");
+    console.log(" Generando archivo Excel...");
 
-    // Ejecutar la consulta a la base de datos
     const result = await db.query(`
       SELECT 
         p.tuition AS "Tuition",  
@@ -26,11 +25,9 @@ export async function createExcel() {
       return;
     }
 
-    // Crear el archivo Excel
     const workbook = await XLSXPopulate.fromBlankAsync();
-    const sheet = workbook.sheet(0); // Usar la hoja principal
+    const sheet = workbook.sheet(0);
 
-    // Agregar encabezados
     const headers = Object.keys(data[0]);
     headers.forEach((header, i) => {
       sheet
@@ -39,22 +36,20 @@ export async function createExcel() {
         .style({ bold: true, fill: "yellow" });
     });
 
-    // Agregar datos
     data.forEach((row, rowIndex) => {
       headers.forEach((header, colIndex) => {
         sheet.cell(rowIndex + 2, colIndex + 1).value(row[header]);
       });
     });
 
-    // Guardar el archivo en la carpeta actual
     const filePath = path.resolve("planes.xlsx");
     await workbook.toFileAsync(filePath);
 
     console.log(`📂 Archivo Excel generado exitosamente: ${filePath}`);
 
-    return filePath; // Devuelve la ruta del archivo si es necesario usarlo en una API
+    return filePath;
   } catch (error) {
     console.error("❌ Error al exportar a Excel:", error);
-    return null; // Retorna null en caso de error
+    return null;
   }
 }
