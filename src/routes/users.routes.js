@@ -14,8 +14,8 @@ router.post("/login", userController.login);
 router.post("/resetPassword", userController.resetPassword);
 router.get("/profile", verifyToken, userController.profile);
 
-// addmin
-router.get("/", verifyToken, verifyAdmin, userController.findAll);
+// admin
+router.get("/", userController.findAll);
 router.put(
   "/update-role/:iduser",
   verifyToken,
@@ -25,11 +25,6 @@ router.put(
 
 router.post("/logout", verifyToken, userController.logout);
 7;
-router.delete(
-  "/delete/:iduser",
-  verifyToken,
-  verifyAdmin,
-  userController.deleteUser
-);
+router.delete("/:iduser", userController.deleteUser);
 
 export default router;

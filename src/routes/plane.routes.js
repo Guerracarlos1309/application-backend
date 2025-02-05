@@ -5,19 +5,19 @@ import { verifyAdmin, verifyToken } from "../middlewares/jwt.middlewares.js";
 
 const router = Router();
 
-router.post("/create", verifyToken, verifyAdmin, planeControllers.createPlane);
+router.post("/create", planeControllers.createPlane);
 
-router.get("/", verifyToken, verifyAdmin, planeControllers.getAll);
+router.get("/", planeControllers.getAll);
+router.get("/statuses", planeControllers.getStatuses);
 router.get(
   "/:tuition",
-  verifyToken,
-  verifyAdmin,
+
   planeControllers.getPlaneById
 );
+
 router.get(
   "/status/:id_status",
-  verifyToken,
-  verifyAdmin,
+
   planeControllers.getPlaneByStatus
 );
 
@@ -28,10 +28,5 @@ router.put(
   planeControllers.updateFlight
 );
 
-router.delete(
-  "/delete/:tuition",
-  verifyToken,
-  verifyAdmin,
-  planeControllers.deletePlane
-);
+router.delete("/delete/:tuition", planeControllers.deletePlane);
 export default router;

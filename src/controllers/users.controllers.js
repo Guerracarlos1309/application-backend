@@ -4,9 +4,25 @@ import jwt from "jsonwebtoken";
 
 const register = async (req, res) => {
   try {
-    const { gmail, password } = req.body;
+    const {
+      gmail,
+      password,
+      firstname,
+      lastname,
+      phoneNumber,
+      address,
+      status,
+    } = req.body;
 
-    if (!gmail || !password) {
+    if (
+      !gmail ||
+      !password ||
+      !firstname ||
+      !lastname ||
+      !phoneNumber ||
+      !address ||
+      !status
+    ) {
       return res.status(400).json({
         ok: false,
         msg: "Missing required fields",
@@ -28,6 +44,11 @@ const register = async (req, res) => {
     const newUser = await userModel.create({
       gmail,
       password: hashedPassword,
+      firstname,
+      lastname,
+      phoneNumber,
+      address,
+      status,
     });
 
     const token = jwt.sign(
@@ -42,8 +63,8 @@ const register = async (req, res) => {
     );
 
     return res.json({
-      ok: true,
-      msg: token,
+      msg: "Save register",
+      token: token,
     });
   } catch (error) {
     console.log(error);
@@ -95,8 +116,8 @@ const login = async (req, res) => {
     );
 
     return res.json({
-      ok: true,
-      msg: token,
+      msg: "login",
+      token: token,
     });
   } catch (error) {
     console.log(error);

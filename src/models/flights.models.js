@@ -34,7 +34,19 @@ const createFlight = async ({
 
 const getAll = async () => {
   const query = {
-    text: `SELECT * FROM flight order by id_flight asc`,
+    text: `select f.id_flight as "id_flight",
+          f.flight_number as "flight_number",
+          a.name as "a_departure",
+          x.name as "a_arrival",
+          concat(p.firstname,' ',p.lastname) as "passenger_name",
+          s.name_services as "service",
+          t.tuition as "tuition",
+          t.name as "name"
+          from flight f join airport a on f.airport_departure = a.id_airport
+		      join airport x on f.airport_arrival = x.id_airport
+		      join passenger p on f.id_passenger = p.id_passenger
+		      join services s on f.id_services = s.id_services
+		      join plane t on f.id_tuition = t.tuition  order by f.id_flight asc`,
   };
   const { rows } = await db.query(query);
   return rows;

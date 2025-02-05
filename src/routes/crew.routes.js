@@ -4,14 +4,9 @@ import { verifyAdmin, verifyToken } from "../middlewares/jwt.middlewares.js";
 
 const router = Router();
 
-router.post(
-  "/create",
-  verifyToken,
-  verifyAdmin,
-  crewController.createCrewMember
-);
+router.post("/create", crewController.createCrewMember);
 
-router.get("/", verifyToken, verifyAdmin, crewController.getAllCrewMembers);
+router.get("/", crewController.getAllCrewMembers);
 router.get(
   "/search",
   verifyToken,
@@ -25,10 +20,5 @@ router.put(
   crewController.updateCrewMember
 );
 
-router.delete(
-  "/delete/:id_license",
-  verifyToken,
-  verifyAdmin,
-  crewController.deleteCrewMember
-);
+router.delete("/delete/:id_license", crewController.deleteCrewMember);
 export default router;

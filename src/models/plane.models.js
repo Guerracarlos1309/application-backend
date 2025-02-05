@@ -9,6 +9,14 @@ const createPlane = async ({
   id_status,
   id_model,
 }) => {
+  console.log("Datos recibidos para insertar en la base de datos:", {
+    tuition,
+    name,
+    passenger_capacity,
+    flight_hours,
+    id_status,
+    id_model,
+  });
   const query = {
     text: `INSERT INTO plane (tuition, name, passenger_capacity, flight_hours, id_status, id_model) VALUES ($1, $2, $3, $4, $5, $6) returning *`,
     values: [
@@ -22,15 +30,26 @@ const createPlane = async ({
   };
 
   const { rows } = await db.query(query);
+  console.log("Avión insertado:", rows[0]);
   return rows[0];
 };
 
 const getAll = async () => {
   const query = {
-    text: `SELECT * from plane`,
+    text: `SELECT 
+    p.tuition AS "tuition",  
+    p.name AS "name", 
+    p.passenger_capacity AS "passenger_capacity",
+    p.flight_hours AS "flight_hours",
+    s.description AS "id_status",  -- Descripción del estado en lugar del ID
+    m.description AS "id_model"    -- Descripción del modelo en lugar del ID
+FROM plane p
+JOIN status_flight s ON p.id_status = s.id_status
+JOIN model_plane m ON p.id_model = m.id_model;`,
   };
 
   const { rows } = await db.query(query);
+
   return rows;
 };
 
@@ -42,6 +61,14 @@ const getPlaneById = async (tuition) => {
 
   const { rows } = await db.query(query);
   return rows[0];
+};
+
+const getStatuses = async () => {
+  const query = {
+    text: `SELECT * FROM status_flight`,
+  };
+  const { rows } = await db.query(query);
+  return rows;
 };
 
 const getPlaneByStatus = async (id_status) => {
@@ -96,4 +123,5 @@ export const planeModel = {
   updateFlight,
   deletePlane,
   existingPlane,
+  getStatuses,
 };

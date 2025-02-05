@@ -9,6 +9,7 @@ const createPlane = async (req, res) => {
     id_status,
     id_model,
   } = req.body;
+  console.log("Petición recibida:", req.body);
 
   if (
     !tuition ||
@@ -51,6 +52,22 @@ const createPlane = async (req, res) => {
     return res.json({
       status: "error",
       message: "error creating plane",
+      error: error.message,
+    });
+  }
+};
+
+const getStatuses = async (req, res) => {
+  try {
+    const status = await planeModel.getStatuses();
+    return res.json({
+      status: "success",
+      data: status,
+    });
+  } catch (error) {
+    return res.json({
+      status: "Error",
+      message: "error fetching planes",
       error: error.message,
     });
   }
@@ -186,4 +203,5 @@ export const planeControllers = {
   getPlaneByStatus,
   updateFlight,
   deletePlane,
+  getStatuses,
 };

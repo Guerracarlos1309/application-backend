@@ -4,7 +4,7 @@ import { verifyAdmin, verifyToken } from "../middlewares/jwt.middlewares.js";
 
 const router = Router();
 
-router.get("/", verifyToken, verifyAdmin, reservesController.getAllReserves);
+router.get("/", reservesController.getAllReserves);
 
 router.post("/create", reservesController.createReserve);
 router.post("/findByDate", reservesController.findByReservationByDate);

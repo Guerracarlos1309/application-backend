@@ -1,11 +1,27 @@
 import { text } from "express";
 import { db } from "../database/connection.database.js";
 
-const create = async ({ gmail, password }) => {
+const create = async ({
+  gmail,
+  password,
+  firstname,
+  lastname,
+  phoneNumber,
+  address,
+  status,
+}) => {
   const query = {
-    text: `INSERT INTO usuarios (gmail, password ) VALUES ($1, $2)
-    RETURNING gmail,fk_role`,
-    values: [gmail, password],
+    text: `INSERT INTO usuarios (gmail, password, firstname, lastname, phoneNumber, address, status  ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING gmail,fk_role, firstname`,
+    values: [
+      gmail,
+      password,
+      firstname,
+      lastname,
+      phoneNumber,
+      address,
+      status,
+    ],
   };
 
   const { rows } = await db.query(query);
@@ -23,7 +39,7 @@ const findOneByEmail = async (gmail) => {
 
 const findAll = async () => {
   const query = {
-    text: `SELECT iduser,gmail,fk_role FROM usuarios ORDER BY iduser asc`,
+    text: `SELECT iduser,gmail,fk_role, firstname, lastname, phoneNumber, status FROM usuarios ORDER BY iduser asc`,
   };
   const { rows } = await db.query(query);
   return rows;
